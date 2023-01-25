@@ -5,15 +5,13 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 export const SignUpForm = ({ navigation }) => {
 
-    const types = ["User", "Restaurant"];
-
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [type, setType] = useState("");
 
-    const [toggleUser, setToggleUser] = useState(false)
-    const [toggleRestaurant, setToggleRestaurant] = useState(false)
+    const [toggleUser, setToggleUser] = useState(false);
+    const [toggleRestaurant, setToggleRestaurant] = useState(false);
 
     const [error, setError] = useState("");
 
@@ -38,7 +36,9 @@ export const SignUpForm = ({ navigation }) => {
             if(response["message"]) {
                 setError(response["message"])
             } else{
-                navigation.navigate("Search");
+                type === "User" ?
+                    navigation.navigate("Customer Form", { username: username, navigation: navigation }) :
+                    navigation.navigate("Restaurant Form", { username: username, navigation: navigation });
             }
         });
     }
@@ -46,7 +46,7 @@ export const SignUpForm = ({ navigation }) => {
     return (
         <SafeAreaView style={ styles.form }>
             <Image
-                source={require('../utility/images/signup_background.png')}
+                source={require('../../utility/images/signup_background.png')}
                 style={{width: "100%", height: 400, marginTop: -190, marginBottom: -120}}
             />
             <Text style={styles.modalText}>Registration Form</Text>
@@ -105,7 +105,7 @@ export const SignUpForm = ({ navigation }) => {
                 style={ styles.loginButton }
                 onPress={pressHandle}
             >
-                <Text style={ styles.loginText }>Sign up</Text>
+                <Text style={ styles.loginText }>Continue</Text>
             </Pressable>
         </SafeAreaView>
     );

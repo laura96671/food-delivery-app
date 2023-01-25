@@ -37,7 +37,6 @@ public class GeoHashCalculate {
 
         GeoHash geohash = GeoHash.withCharacterPrecision(latitude, longitude, 9);
         String geoHashString = geohash.toBase32();
-        System.out.println("geohash string is "+geoHashString);
 
         List<String> geoHashes = new ArrayList<String>();
         geoHashes.add(geoHashString);
@@ -58,8 +57,7 @@ public class GeoHashCalculate {
         12	≤ 37.2mm X 18.6mm
         */
 
-        List<Restaurant> coords = restaurantRepository.getParam(geoHashString.substring(0,5));
-        System.out.println("coords are"+coords);
+        List<Restaurant> coords = restaurantRepository.getParam(geoHashString.substring(0,4));
         for(Restaurant x:coords) {
             String restaurant = x.getRestaurant_name();
             String genre = x.getGenre();

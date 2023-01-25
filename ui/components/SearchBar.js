@@ -4,11 +4,20 @@ import { Text, View, SafeAreaView, TextInput, StyleSheet, Button, Image, Touchab
 import { geocodeSettings } from '../utility/geocode.js';
 import { useState, useEffect } from 'react';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { persistor } from "../redux/store";
+import { RESET_ACTION } from '../redux/action';
+import { store } from '../redux/store';
+
 import { Restaurants } from './Restaurants';
-import { LoginForm } from './LoginForm';
+import { LoginForm } from './registration_forms/LoginForm';
 import { NotificationContext } from '../App';
 
 export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
+
+    const {user, restaurant} = useSelector(state => state.actionReducer);
+    const dispatch = useDispatch();
+    console.log(user, "ddddgg",restaurant)
 
     const [myAddress, setMyAddress] = useState("");
     const [showComponent, setShowComponent] = useState(false);
@@ -26,8 +35,8 @@ export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
           method: 'POST',
           mode: "cors",
           body: JSON.stringify({
-              lat: 47.360980,
-              lng: 8.598130
+              lat: 51.514420,
+              lng: -0.180530
           }),
           headers: {
             'Content-Type': 'application/json',
@@ -35,7 +44,9 @@ export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
         })
         .then((res) => res.json())
         .then(response => {
+            console.log("rrrr", response)
             setRestaurants(response);
+
             return response;
         });
         navigation.navigate('Restaurants');
@@ -49,32 +60,35 @@ export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
     return (
         <>
             <View style={{ backgroundColor: "white" }}>
-              <Button title="log in" onPress={toggleModal} />
-              <View style={styles.centeredView}>
-                  <Modal
-                      animationType="slide"
-                      transparent={true}
-                      visible={isModalVisible}
-                      onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                        setModalVisible(!isModalVisible);
-                      }}
-                    >
-                      <View style={styles.centeredView}>
-                        <View style={styles.modalView}>
-                          <Pressable
-                            onPress={() => setModalVisible(!isModalVisible)}
-                          >
-                            <Text style={styles.textStyle}>X</Text>
-                          </Pressable>
-                          <LoginForm
-                            navigation={navigation}
-                            setModalVisible={setModalVisible}
-                        />
-                        </View>
-                      </View>
-                    </Modal>
-                </View>
+                  <Text>Welcome back</Text>
+                  {user ? <Text>Welcome back, {user}</Text> : <></>}
+                  <Button title="log in" onPress={toggleModal} />
+                  <Button title="log out" onPress={() => store.dispatch(RESET_ACTION)} />
+                  <View style={styles.centeredView}>
+                      <Modal
+                          animationType="slide"
+                          transparent={true}
+                          visible={isModalVisible}
+                          onRequestClose={() => {
+                            Alert.alert("Modal has been closed.");
+                            setModalVisible(!isModalVisible);
+                          }}
+                        >
+                          <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                              <Pressable
+                                onPress={() => setModalVisible(!isModalVisible)}
+                              >
+                                <Text style={styles.textStyle}>X</Text>
+                              </Pressable>
+                              <LoginForm
+                                navigation={navigation}
+                                setModalVisible={setModalVisible}
+                            />
+                            </View>
+                          </View>
+                        </Modal>
+                    </View>
             </View>
             <SafeAreaView style={styles.bgColor}>
                 <Image

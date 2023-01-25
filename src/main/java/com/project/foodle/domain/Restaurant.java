@@ -8,8 +8,8 @@ import java.util.Objects;
 public class Restaurant {
 
     @Id
-    @GeneratedValue
-    @Column(name="id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Long id;
 
     @Column(name="restaurant_name", nullable = false)
@@ -24,26 +24,30 @@ public class Restaurant {
     @Column(name="genre", nullable = false)
     private String genre;
 
-    @Column(name="cover_image", nullable = false)
+    @Column(name="cover_image")
     private String cover_image;
 
     @Column(name="address", nullable = false)
     private String address;
 
-    @Column(name="latitude", nullable = false)
+    @Column(name="latitude")
     private double latitude;
 
-    @Column(name="longitude", nullable = false)
+    @Column(name="longitude")
     private double longitude;
 
-    @Column(name="geohash", nullable = false)
+    @Column(name="geohash")
     private String geohash;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="restaurant_id", referencedColumnName="id")
+    private User user;
 
     public Restaurant() {
 
     }
 
-    public Restaurant(long id, String restaurant_name, String description, String menu, String genre, String cover_image, String address, double latitude, double longitude, String geohash) {
+    public Restaurant(Long id, String restaurant_name, String description, String menu, String genre, String cover_image, String address, double latitude, double longitude, String geohash, User user) {
         this.id = id;
         this.restaurant_name = restaurant_name;
         this.description = description;
@@ -54,78 +58,95 @@ public class Restaurant {
         this.latitude = latitude;
         this.longitude = longitude;
         this.geohash = geohash;
+        this.user = user;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getRestaurant_name() {
         return restaurant_name;
     }
 
+    public void setRestaurant_name(String restaurant_name) {
+        this.restaurant_name = restaurant_name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public String getMenu() { return menu; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getMenu() {
+        return menu;
+    }
+
+    public void setMenu(String menu) {
+        this.menu = menu;
+    }
 
     public String getGenre() {
         return genre;
     }
 
-    public String getCover_image() { return cover_image; }
-
-    public String getAddress() { return address; }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public String getGeohash() {
-        return geohash;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setRestaurant_name(String restaurant_name) {
-        this.restaurant_name = restaurant_name;
-    }
-
-    public void setDescription(String description) {
-        this.genre = description;
-    }
-
-    public void setMenu(String menu) { this.menu = menu; }
-
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public String getCover_image() {
+        return cover_image;
     }
 
     public void setCover_image(String cover_image) {
         this.cover_image = cover_image;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public double getLatitude() {
+        return latitude;
     }
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
+    public double getLongitude() {
+        return longitude;
+    }
+
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
+    public String getGeohash() {
+        return geohash;
+    }
+
     public void setGeohash(String geohash) {
         this.geohash = geohash;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -133,12 +154,12 @@ public class Restaurant {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Restaurant that = (Restaurant) o;
-        return id == that.id && restaurant_name.equals(that.restaurant_name) && description.equals(that.description) && menu.equals(that.menu) && genre.equals(that.genre) && cover_image.equals(that.cover_image) && address.equals(that.address) && Objects.equals(latitude, that.latitude) && Objects.equals(longitude, that.longitude) && Objects.equals(geohash, that.geohash);
+        return Double.compare(that.latitude, latitude) == 0 && Double.compare(that.longitude, longitude) == 0 && Objects.equals(id, that.id) && restaurant_name.equals(that.restaurant_name) && description.equals(that.description) && menu.equals(that.menu) && genre.equals(that.genre) && cover_image.equals(that.cover_image) && address.equals(that.address) && geohash.equals(that.geohash) && user.equals(that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, restaurant_name, description, menu, genre, cover_image, address, latitude, longitude, geohash);
+        return Objects.hash(id, restaurant_name, description, menu, genre, cover_image, address, latitude, longitude, geohash, user);
     }
 
     @Override
@@ -154,6 +175,7 @@ public class Restaurant {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", geohash='" + geohash + '\'' +
+                ", user=" + user +
                 '}';
     }
 }

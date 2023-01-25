@@ -1,0 +1,10 @@
+CREATE TABLE customers (
+  ID int(11) NOT NULL,
+  name varchar(25),
+  surname varchar(20) NOT NULL,
+  user_id int(11) NOT NULL,
+  PRIMARY KEY (ID),
+  CONSTRAINT `FK_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+);
+
+alter table restaurants add CONSTRAINT `FK_users` FOREIGN KEY (`restaurant_id`) REFERENCES `users` (`id`);

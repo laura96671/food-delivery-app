@@ -1,11 +1,19 @@
 import React from "react";
 import { Text } from "react-native";
 
-export const UserArea = ({ route }) => {
+import { useSelector, useDispatch } from 'react-redux';
 
-    const username = route.params.username;
+export const UserArea = () => {
+
+    const { user, restaurant } = useSelector(state => state.actionReducer);
+    const dispatch = useDispatch();
+
+    console.log("dd", user)
 
     return (
-        <Text>{username}</Text>
+        <>
+            <Text>jjj</Text>
+            <Text>kkk</Text>
+        </>
     )
 }

@@ -1,15 +1,20 @@
-import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, TextInput, Pressable, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { SafeAreaView, StyleSheet, TextInput, Pressable, Text, FlatList } from "react-native";
 
-import { UserArea } from './UserArea';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUsername, getRestaurant } from '../../redux/action';
+
+import { UserArea } from '../UserArea';
 
 export const LoginForm = ({ navigation, setModalVisible }) => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const { user, restaurant, logOut } = useSelector(state => state.actionReducer);
+    const dispatch = useDispatch();
+
     const [error, setError] = useState("");
-    const [getValue, setGetValue] = useState("");
 
     const handleLoginSubmit = (e) => {
         e.preventDefault();
@@ -27,9 +32,28 @@ export const LoginForm = ({ navigation, setModalVisible }) => {
         })
         .then((res) => res.json())
         .then(response => {
-            if(response["password"] == password){
-
+            if(response["password"] == password) {
+                dispatch(getUsername(response));
+                navigation.navigate("Personal Area");
                 setModalVisible(false);
+                if(response.type == "Restaurant") {
+                    fetch('http://localhost:8080/getUserRestaurant', {
+                        method: 'POST',
+                        mode: "cors",
+                        body: JSON.stringify({
+                           username: username,
+                        }),
+                        headers: {
+                        'Content-Type': 'application/json',
+                        }
+                    })
+                    .then((res) => res.json())
+                    .then(response => {
+                        if(response) {
+                           dispatch(getRestaurant(response));
+                        }
+                    });
+                }
             } else { setError("wrong email or password") }
         });
     }
