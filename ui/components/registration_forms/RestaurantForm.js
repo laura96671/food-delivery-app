@@ -3,6 +3,7 @@ import { SafeAreaView, View, Text, Image, TextInput, Pressable, StyleSheet } fro
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import Geocode from "react-geocode";
+import config from '../../config.js';
 
 
 export const RestaurantForm = ({ route, navigation }) => {
@@ -37,10 +38,9 @@ export const RestaurantForm = ({ route, navigation }) => {
 
     // Getting lat & long from address
     const address = data.address
-    const API_KEY = process.env.REACT_APP_GEOCODE_API
-    console.log(API_KEY)
+    const geocodeApi = config.api.GEOCODE_API;
     const getLatLong = (address) => {
-      Geocode.setApiKey(API_KEY);
+      Geocode.setApiKey(geocodeApi);
       Geocode.setLanguage("en");
       Geocode.setLocationType("ROOFTOP");
       Geocode.enableDebug();

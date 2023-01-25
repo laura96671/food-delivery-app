@@ -1,4 +1,5 @@
 import React from 'react';
+import config from '../config.js';
 
 import { Text, View, SafeAreaView, TextInput, StyleSheet, Button, Image, TouchableOpacity, Modal, Pressable } from 'react-native';
 import { geocodeSettings } from '../utility/geocode.js';
@@ -17,7 +18,6 @@ export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
 
     const {user, restaurant} = useSelector(state => state.actionReducer);
     const dispatch = useDispatch();
-    console.log(user, "ddddgg",restaurant)
 
     const [myAddress, setMyAddress] = useState("");
     const [showComponent, setShowComponent] = useState(false);
@@ -60,7 +60,6 @@ export const SearchBar = ({navigation, restaurants, setRestaurants}) => {
     return (
         <>
             <View style={{ backgroundColor: "white" }}>
-                  <Text>Welcome back</Text>
                   {user ? <Text>Welcome back, {user}</Text> : <></>}
                   <Button title="log in" onPress={toggleModal} />
                   <Button title="log out" onPress={() => store.dispatch(RESET_ACTION)} />

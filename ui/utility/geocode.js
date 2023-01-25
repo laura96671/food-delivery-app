@@ -1,8 +1,8 @@
 import Geocode from "react-geocode";
 
 export function geocodeSettings(address, setRestaurants) {
-    const API_KEY = process.env.REACT_APP_GEOCODE_API
-    Geocode.setApiKey(API_KEY);
+    const geocodeApi = config.api.GEOCODE_API;
+    Geocode.setApiKey(geocodeApi);
     Geocode.setLanguage("en");
     Geocode.setLocationType("ROOFTOP");
     Geocode.enableDebug();
