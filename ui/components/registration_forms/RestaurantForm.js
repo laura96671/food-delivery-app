@@ -37,8 +37,10 @@ export const RestaurantForm = ({ route, navigation }) => {
 
     // Getting lat & long from address
     const address = data.address
+    const API_KEY = process.env.REACT_APP_GEOCODE_API
+    console.log(API_KEY)
     const getLatLong = (address) => {
-      Geocode.setApiKey("AIzaSyCgad-np836dZSmlEvsKUXBCwLZ_6zJl1k");
+      Geocode.setApiKey(API_KEY);
       Geocode.setLanguage("en");
       Geocode.setLocationType("ROOFTOP");
       Geocode.enableDebug();
